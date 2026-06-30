@@ -44,9 +44,35 @@ const mostBlogs = (blogs) => {
   return topAuthor
 }
 
+// 4.7*: Helper Functions and Unit Tests, step 5
+
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return null
+
+ 
+  const authorLikes = {}
+
+  blogs.forEach(blog => {
+    authorLikes[blog.author] = (authorLikes[blog.author] || 0) + blog.likes
+  })
+
+ 
+  let topAuthor = { author: '', likes: 0 }
+  
+  for (const author in authorLikes) {
+    if (authorLikes[author] > topAuthor.likes) {
+      topAuthor = { author: author, likes: authorLikes[author] }
+    }
+  }
+
+  return topAuthor
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes,
+    
 }

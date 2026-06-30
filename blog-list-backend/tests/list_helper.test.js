@@ -60,3 +60,21 @@ describe('most blogs', () => {
     })
   })
 })
+
+// 4.7*: Helper Functions and Unit Tests, step 5
+
+describe('most likes', () => {
+  const blogs = [
+    { author: 'Edsger W. Dijkstra', likes: 12 },
+    { author: 'Robert C. Martin', likes: 10 },
+    { author: 'Edsger W. Dijkstra', likes: 5 }
+  ]
+
+  test('returns the author with most total likes', () => {
+    const result = listHelper.mostLikes(blogs)
+    assert.deepStrictEqual(result, {
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    })
+  })
+})
