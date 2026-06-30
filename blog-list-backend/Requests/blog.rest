@@ -13,3 +13,13 @@ Content-Type:  application/json
 GET http://localhost:3003/api/blogs 
 Content-Type: application/json
 
+### send the post request
+POST http://localhost:3003/api/blogs 
+Content-Type: application/json
+
+{
+    "title": "my first request",
+    "author": "Yuvraj Singh",
+    "url": "https://github.com/yuvrajsteve-cmyk/fullstackopen-part4",
+    "likes": 10
+}
