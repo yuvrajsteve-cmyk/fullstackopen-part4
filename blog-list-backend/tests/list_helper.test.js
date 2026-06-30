@@ -19,3 +19,26 @@ describe('total likes', () => {
     assert.strictEqual(result, 5)
   })
 })
+
+
+// 4.5*: Helper Functions and Unit Tests, step 3
+
+describe('favorite blog', () => {
+  const blogs = [
+    {
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      likes: 12
+    },
+    {
+      title: "First class tests",
+      author: "Robert C. Martin",
+      likes: 10
+    }
+  ]
+
+  test('when list has multiple blogs, returns the one with most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, blogs[0])
+  })
+})

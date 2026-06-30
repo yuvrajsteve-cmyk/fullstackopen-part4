@@ -10,7 +10,18 @@ const totalLikes = (blogs) => {
     return blogs.reduce((sum, blog) => sum + blog.likes, 0)
 }
 
+// 4.5*: Helper Functions and Unit Tests, step 3
+
+const favoriteBlog = (blogs) => {
+    if (blogs.lenght === 0) return null
+
+    return blogs.reduce((prev, current) => {
+        return (prev.likes > current.likes) ? prev : current
+    })
+}
+
 module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favoriteBlog
 }
