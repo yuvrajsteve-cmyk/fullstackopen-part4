@@ -42,3 +42,21 @@ describe('favorite blog', () => {
     assert.deepStrictEqual(result, blogs[0])
   })
 })
+
+
+// 4.6*: Helper Functions and Unit Tests, step 4
+describe('most blogs', () => {
+  const blogs = [
+    { author: 'Robert C. Martin', title: 'Blog 1' },
+    { author: 'Robert C. Martin', title: 'Blog 2' },
+    { author: 'Edsger W. Dijkstra', title: 'Blog 3' }
+  ]
+
+  test('returns the author with most blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    assert.deepStrictEqual(result, {
+      author: 'Robert C. Martin',
+      blogs: 2
+    })
+  })
+})
