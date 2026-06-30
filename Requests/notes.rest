@@ -1,0 +1,8 @@
+### send the post request to the server
+POST http://localhost:3002/api/notes
+Content-Type: application/json
+
+{
+    "content": "My name is yuvraj singh",
+    "important": "true"
+}
