@@ -1,30 +1,27 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const helper = require('./test_helper')
 const Note = require('../models/note')
-const assert = require('assert')
 
 const api = supertest(app)
 
-jest.setTimeout(30000) 
-
 beforeAll(async () => {
-  if (mongoose.connection.readyState === 0) {
+  try {
     await mongoose.connect(process.env.TEST_MONGODB_URI)
+    console.log('Connected to MongoDB successfully')
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message)
   }
 })
 
-const initialNotes = [
-  { content: 'HTML is easy', important: false },
-  { content: 'Browser can execute only JavaScript', important: true }
-]
-
 beforeEach(async () => {
   await Note.deleteMany({})
-
-  let noteObject = new Note(initialNotes[0])
+  
+  let noteObject = new Note(helper.initialNotes[0])
   await noteObject.save()
-  noteObject = new Note(initialNotes[1])
+  
+  noteObject = new Note(helper.initialNotes[1])
   await noteObject.save()
 }, 30000)
 
@@ -35,17 +32,9 @@ test('notes are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test.only('notes are returned as json', async () => {
-  await api
-  .get('/api/notes')
-  .expect(200)
-  .expect('Content-Type', /application\/json/)
-})
-
-test.only('all notes are returned', async () => {
+test('all notes are returned', async () => {
   const response = await api.get('/api/notes')
-
-  assert.strictEqual(response.body.length, 2)
+  expect(response.body).toHaveLength(helper.initialNotes.length)
 })
 
 afterAll(async () => {

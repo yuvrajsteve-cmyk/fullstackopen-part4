@@ -28,5 +28,20 @@ notesRouter.post('/', async (request, response) => {
   const savedNote = await note.save()
   response.status(201).json(savedNote)
 })
+  
 
+ notesRouter.post('/api/notes', (request, response, next) => {
+  const body = request.body
+
+  const note = new Note({
+    content: body.content,
+    important: body.important || false,
+  })
+
+  note.save()
+  .then(savedNote => {
+    response.status(201).json(savedNote)
+  })
+  .catch(error => next(error))
+ })
 module.exports = notesRouter
