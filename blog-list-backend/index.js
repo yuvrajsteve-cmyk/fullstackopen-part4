@@ -1,20 +1,12 @@
-require('dotenv').config() 
 const app = require('./app')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
+mongoose.connect(config.MONGODB_URI)
+  .then(() => logger.info('connected to MongoDB'))
+  .catch((error) => logger.error('error connecting:', error.message))
 
-const mongoUrl = process.env.mongoUrl 
-
-console.log('Connecting to:', mongoUrl) 
-
-mongoose.connect(mongoUrl)
-  .then(() => {
-    console.log('✅ Connected to MongoDB')
-    const PORT = process.env.PORT || 3003
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`)
-    })
-  })
-  .catch((error) => {
-    console.log('❌ Error connecting to MongoDB:', error.message)
-  })
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
+})

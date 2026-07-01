@@ -1,5 +1,3 @@
-const { test, describe } = require('node:test') 
-const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 
 describe('total likes', () => {
@@ -16,12 +14,9 @@ describe('total likes', () => {
 
   test('when list has only one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
-    assert.strictEqual(result, 5)
+    expect(result).toBe(5)
   })
 })
-
-
-// 4.5*: Helper Functions and Unit Tests, step 3
 
 describe('favorite blog', () => {
   const blogs = [
@@ -39,12 +34,10 @@ describe('favorite blog', () => {
 
   test('when list has multiple blogs, returns the one with most likes', () => {
     const result = listHelper.favoriteBlog(blogs)
-    assert.deepStrictEqual(result, blogs[0])
+    expect(result).toEqual(blogs[0])
   })
 })
 
-
-// 4.6*: Helper Functions and Unit Tests, step 4
 describe('most blogs', () => {
   const blogs = [
     { author: 'Robert C. Martin', title: 'Blog 1' },
@@ -54,14 +47,12 @@ describe('most blogs', () => {
 
   test('returns the author with most blogs', () => {
     const result = listHelper.mostBlogs(blogs)
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       author: 'Robert C. Martin',
       blogs: 2
     })
   })
 })
-
-// 4.7*: Helper Functions and Unit Tests, step 5
 
 describe('most likes', () => {
   const blogs = [
@@ -72,7 +63,7 @@ describe('most likes', () => {
 
   test('returns the author with most total likes', () => {
     const result = listHelper.mostLikes(blogs)
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       author: 'Edsger W. Dijkstra',
       likes: 17
     })
