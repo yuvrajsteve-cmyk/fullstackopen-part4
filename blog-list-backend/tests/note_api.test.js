@@ -18,15 +18,18 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await Note.deleteMany({})
+  console.log('cleared')
   
   let noteObject = new Note(helper.initialNotes[0])
   await noteObject.save()
+  console.log('saved')
   
   noteObject = new Note(helper.initialNotes[1])
   await noteObject.save()
 }, 30000)
 
 test('notes are returned as json', async () => {
+  console.log('entered test')
   await api
     .get('/api/notes')
     .expect(200)
