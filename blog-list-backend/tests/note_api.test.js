@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const Note = require('../models/note')
+const assert = require('assert')
 
 const api = supertest(app)
 
@@ -35,6 +36,18 @@ test('notes are returned as json', async () => {
 test('all notes are returned', async () => {
   const response = await api.get('/api/notes')
   expect(response.body).toHaveLength(helper.initialNotes.length)
+})
+
+test('a specific note can be viewed', async () => {
+  const notesAtStart = await helper.notesInDb()
+  const noteToView = notesAtStart[0]
+
+  const resultNote = await api
+    .get(`/api/notes/${noteToView.id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/ )
+
+    assert.deepStrictEqual(resultNote.body, noteToView)
 })
 
 afterAll(async () => {

@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js",
-  "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
-},
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
