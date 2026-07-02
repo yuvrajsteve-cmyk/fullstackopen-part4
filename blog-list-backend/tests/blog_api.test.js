@@ -15,7 +15,12 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  await Blog.insertMany(initialBlogs)
+ 
+  let blogObject = new Blog(initialBlogs[0])
+  await blogObject.save()
+
+  blogObject = new Blog(initialBlogs[1])
+  await blogObject.save()
 })
 
 test('blogs are returned as json', async () => {
@@ -29,6 +34,18 @@ test('there are two blogs', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(initialBlogs.length)
 })
+
+
+
+// start the new test for the new exercise 
+
+  test('blog posts have a unique identifier named id', async () => {
+    
+    const response = await api.get('/api/blogs')
+    const firstBlog = response.body[0]
+    console.log('data from the backend', response.body[0])
+    expect(firstBlog.id).toBeDefined()
+  })
 
 afterAll(async () => {
   await mongoose.connection.close() 
