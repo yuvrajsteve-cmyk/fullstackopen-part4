@@ -47,6 +47,32 @@ test('there are two blogs', async () => {
     expect(firstBlog.id).toBeDefined()
   })
 
+  // write a new test for a new exercise 
+
+  test('a valid blog can be added', async () => {
+    const startResponse = await api.get('/api/blogs')
+    const totalBlogsAtStart = startResponse.body.length
+
+    const newBlog = {
+      title: 'Cononical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://utexas.edu',
+      likes: 12
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201) // for create
+      .expect('Content-Type', /application\/json/)
+
+      const endResponse = await api.get('/api/blogs')
+      expect(endResponse.body.length).toBe(totalBlogsAtStart + 1)
+
+      const titles = endResponse.body.map(b => b.title)
+      expect(titles).toContain('Cononical string reduction')
+  })
+
 afterAll(async () => {
   await mongoose.connection.close() 
 })
