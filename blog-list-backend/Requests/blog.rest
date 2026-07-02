@@ -23,3 +23,12 @@ Content-Type: application/json
     "url": "https://github.com/yuvrajsteve-cmyk/fullstackopen-part4",
     "likes": 10
 }
+
+### send the request to the notes
+POST http://localhost:3003/api/notes 
+Content-Type:  application/json
+
+{
+   "content": "HTML is easy to learn",
+   "important": "true"
+}

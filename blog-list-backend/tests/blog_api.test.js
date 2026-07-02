@@ -1,23 +1,21 @@
-const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
-
-
-console.log('TEST_MONGODB_URI:', process.env.TEST_MONGODB_URI) 
-
-
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const app = require('../app')
+const app = require('../app') 
+const api = supertest(app)
 const Blog = require('../models/blog')
 
-const api = supertest(app)
-
-
-jest.setTimeout(30000)
+const initialBlogs = [
+  { title: 'React patterns', author: 'Michael Chan', url: 'https://reactpatterns.com/', likes: 7 },
+  { title: 'Go To Statement Considered Harmful', author: 'Edsger W. Dijkstra', url: 'http://www.u.arizona.edu/', likes: 5 }
+]
 
 beforeAll(async () => {
   await mongoose.connect(process.env.TEST_MONGODB_URI)
-  console.log('Mongoose state:', mongoose.connection.readyState) 
+})
+
+beforeEach(async () => {
+  await Blog.deleteMany({})
+  await Blog.insertMany(initialBlogs)
 })
 
 test('blogs are returned as json', async () => {
@@ -27,6 +25,11 @@ test('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
+test('there are two blogs', async () => {
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length)
+})
+
 afterAll(async () => {
-  await mongoose.connection.close()
+  await mongoose.connection.close() 
 })
