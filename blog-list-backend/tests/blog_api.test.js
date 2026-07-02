@@ -72,6 +72,24 @@ test('there are two blogs', async () => {
       const titles = endResponse.body.map(b => b.title)
       expect(titles).toContain('Cononical string reduction')
   })
+  
+
+  // write the new test for the new exercise
+   test('if the likes property is missing, it wil default to 0', async () => {
+     const newBlogWithoutLikes = {
+      title: 'Type wars',
+      author: 'Robert C, Martin',
+      url: 'http://cleancoder.com'
+     }
+
+     const response = await api 
+     .post('/api/blogs')
+     .send(newBlogWithoutLikes)
+     .expect(201)
+     .expect('Content-Type', /application\/json/)
+
+     expect(response.body.likes).toBe(0)
+   })
 
 afterAll(async () => {
   await mongoose.connection.close() 
