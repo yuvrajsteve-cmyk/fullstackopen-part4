@@ -90,7 +90,35 @@ test('there are two blogs', async () => {
 
      expect(response.body.likes).toBe(0)
    })
+   
 
+  //  4.12*: Blog List tests, step 5 add two new tests 
+  test('blog without title is not added and responds with 400 Bad Request', async () => {
+    const newBLogWithoutTitle = {
+      author: 'Robert C, Martain',
+      url: 'http://cleancoder.com',
+      likes: 2
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBLogWithoutTitle)
+      .expect(400)
+  })
+
+  //test 2
+  test('blog without url is not added and responsed with 400 Bad Request', async () => {
+    const newBlogWithoutUrl = {
+      title: 'Types wars',
+      author: 'Robert C. Martin',
+      likes: 2
+    }
+
+    await api 
+      .post('/api/blogs')
+      .send(newBlogWithoutUrl)
+      .expect(400)
+  })
 afterAll(async () => {
   await mongoose.connection.close() 
 })
