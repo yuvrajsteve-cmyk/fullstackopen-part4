@@ -4,51 +4,65 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 
-const initialBlogs = [
-  { title: 'React patterns', author: 'Michael Chan', url: 'https://reactpatterns.com/', likes: 7 },
-  { title: 'Go To Statement Considered Harmful', author: 'Edsger W. Dijkstra', url: 'http://www.u.arizona.edu/', likes: 5 }
-]
+    const initialBlogs = [
+      { 
+        title: 'React patterns', 
+        author: 'Michael Chan', 
+        url: 'https://reactpatterns.com/', 
+        likes: 7 
+      },
 
-beforeAll(async () => {
-  await mongoose.connect(process.env.TEST_MONGODB_URI)
-})
+      { 
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/', 
+        likes: 5 
+      }
+    ]
 
-beforeEach(async () => {
-  await Blog.deleteMany({})
+    beforeAll(async () => {
+      await mongoose.connect(process.env.TEST_MONGODB_URI)
+    })
+
+    beforeEach(async () => {
+      await Blog.deleteMany({})
+    
+      let blogObject = new Blog(initialBlogs[0])
+      await blogObject.save()
+
+      blogObject = new Blog(initialBlogs[1])
+      await blogObject.save()
+    })
+    
+     // first test 
+      test('blogs are returned as json', async () => {
+        await api
+          .get('/api/blogs')
+          .expect(200)
+          .expect('Content-Type', /application\/json/)
+      })
  
-  let blogObject = new Blog(initialBlogs[0])
-  await blogObject.save()
 
-  blogObject = new Blog(initialBlogs[1])
-  await blogObject.save()
-})
-
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
-
-test('there are two blogs', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initialBlogs.length)
-})
+      // second test 
+    test('there are two blogs', async () => {
+      const response = await api.get('/api/blogs')
+      expect(response.body).toHaveLength(initialBlogs.length)
+    })
 
 
 
 // start the new test for the new exercise 
-
-  test('blog posts have a unique identifier named id', async () => {
-    
-    const response = await api.get('/api/blogs')
-    const firstBlog = response.body[0]
-    console.log('data from the backend', response.body[0])
-    expect(firstBlog.id).toBeDefined()
-  })
+         // third test 
+      test('blog posts have a unique identifier named id', async () => {
+        
+        const response = await api.get('/api/blogs')
+        const firstBlog = response.body[0]
+        console.log('data from the backend', response.body[0])
+        expect(firstBlog.id).toBeDefined()
+      })
 
   // write a new test for a new exercise 
-
+      // fourth test
   test('a valid blog can be added', async () => {
     const startResponse = await api.get('/api/blogs')
     const totalBlogsAtStart = startResponse.body.length
@@ -75,6 +89,7 @@ test('there are two blogs', async () => {
   
 
   // write the new test for the new exercise
+  // fifth test
    test('if the likes property is missing, it wil default to 0', async () => {
      const newBlogWithoutLikes = {
       title: 'Type wars',
@@ -93,6 +108,7 @@ test('there are two blogs', async () => {
    
 
   //  4.12*: Blog List tests, step 5 add two new tests 
+  // sixth test 
   test('blog without title is not added and responds with 400 Bad Request', async () => {
     const newBLogWithoutTitle = {
       author: 'Robert C, Martain',
@@ -106,7 +122,7 @@ test('there are two blogs', async () => {
       .expect(400)
   })
 
-  //test 2
+  // seven test 
   test('blog without url is not added and responsed with 400 Bad Request', async () => {
     const newBlogWithoutUrl = {
       title: 'Types wars',
@@ -119,6 +135,8 @@ test('there are two blogs', async () => {
       .send(newBlogWithoutUrl)
       .expect(400)
   })
-afterAll(async () => {
-  await mongoose.connection.close() 
-})
+   
+      //  the most important function 
+      afterAll(async () => {
+        await mongoose.connection.close() 
+      })
