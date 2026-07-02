@@ -33,7 +33,7 @@ const Blog = require('../models/blog')
       blogObject = new Blog(initialBlogs[1])
       await blogObject.save()
     })
-    
+
      // first test 
       test('blogs are returned as json', async () => {
         await api
@@ -140,3 +140,13 @@ const Blog = require('../models/blog')
       afterAll(async () => {
         await mongoose.connection.close() 
       })
+
+
+
+
+
+
+
+
+
+
